@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{secrets.SSH_KEY}}
           script: |
-            docker pull username/go-app:${{ github.sha }}
+            docker pull historylizhi/go-app:${{ github.sha }}
             docker stop go-app || true  
             docker rm go-app || true   
-            docker run -d --name go-app -p 8081:8081 username/go-app:${{ github.sha }}
+            docker run -d --name go-app -p 8081:8081 historylizhi/go-app:${{ github.sha }}
