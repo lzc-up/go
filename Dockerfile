@@ -10,7 +10,7 @@ RUN go mod download && \
 
 # 使用一个新的阶段创建一个最小的镜像。
 FROM alpine:3.14
-COPY --from=builder /app/my-app /usr/local/bin/go-app
+COPY --from=builder /app/go-app /usr/local/bin/go-app
 # 更新文件权限以确保它是可执行的。
 RUN chmod +x /usr/local/bin/go-app
 # 设置容器的默认端口
