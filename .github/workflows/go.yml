@@ -16,7 +16,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t historylizhi/go-app:${{ github.sha }} .
-          docker tag historylizhi/go-app:${{ github.sha }} username/go-app:latest
+          docker tag historylizhi/go-app:${{ github.sha }} historylizhi/go-app:latest
 
       - name: Login to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
