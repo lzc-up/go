@@ -27,8 +27,8 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push ${{ env.REGISTRY }}/go-app:latest
-          docker push ${{ env.REGISTRY }}/go-app:${{ github.sha }}
+          docker push ${{ vars.REGISTRY }}/go-app:latest
+          docker push ${{ vars.REGISTRY }}/go-app:${{ github.sha }}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.3
@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.SSH_KEY }}
           script: |
-            docker pull ${{ env.REGISTRY }}/go-app:${{ github.sha }}
+            docker pull ${{ vars.REGISTRY }}/go-app:${{ github.sha }}
             docker stop go-app || true  
             docker rm go-app || true   
-            docker run -d --name go-app -p 8081:8081 ${{ env.REGISTRY }}/go-app:${{ github.sha }}
+            docker run -d --name go-app -p 8081:8081 ${{ vars.REGISTRY }}/go-app:${{ github.sha }}
