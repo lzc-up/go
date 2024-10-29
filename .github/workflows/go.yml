@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.SSH_KEY }}
           script: |
-            docker pull ${{ vars.REGISTRY }}:${{ github.sha }}
+            docker pull ${{ vars.REGISTRY }}:latest
             docker stop go-app || true  
             docker rm go-app || true   
-            docker run -d --name go-app -p 8081:8081 ${{ vars.REGISTRY }}:${{ github.sha }}
+            docker run -d --name go-app -p 8081:8081 ${{ vars.REGISTRY }}:latest
