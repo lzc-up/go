@@ -34,7 +34,7 @@ jobs:
         with:
           host: ${{secrets.HOST}}
           username: ${{ secrets.USERNAME }}
-          key: ${{secrets.SSH_KEY}}
+          password: ${{secrets.SSH_KEY}}
           script: |
             docker pull historylizhi/go-app:${{ github.sha }}
             docker stop go-app || true  
