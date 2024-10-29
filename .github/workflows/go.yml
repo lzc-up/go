@@ -28,7 +28,6 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ vars.REGISTRY }}:latest
-          docker push ${{ vars.REGISTRY }}:${{ github.sha }}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.3
