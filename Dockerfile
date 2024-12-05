@@ -6,7 +6,7 @@ COPY . .
 
 # 在容器内构建命令。
 RUN go mod download && \
-    CGO_ENABLED=0 GOOS=linux go build -o go-app hello.go
+    CGO_ENABLED=0 GOOS=linux go build -o go-app main.go
 
 # 使用一个新的阶段创建一个最小的镜像。
 FROM alpine:3.14
