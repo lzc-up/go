@@ -10,9 +10,21 @@ RUN go mod download && \
 
 # 使用一个新的阶段创建一个最小的镜像。
 FROM alpine:3.14
+
+# 创建必要的目录
+RUN mkdir -p /app/static /app/templates
+
+# 从构建阶段复制可执行文件和静态资源
 COPY --from=builder /app/go-app /usr/local/bin/go-app
+COPY --from=builder /app/static/ /app/static/
+COPY --from=builder /app/templates/ /app/templates/
+
+# 设置工作目录
+WORKDIR /app
+
 # 更新文件权限以确保它是可执行的。
 RUN chmod +x /usr/local/bin/go-app
+
 # 设置容器的默认端口
 EXPOSE 8081
 
