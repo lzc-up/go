@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            color: white;
+        }
+        .player-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .song-info {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .song-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .song-credits {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        audio {
+            margin: 1rem 0;
+            width: 100%;
+        }
+        audio::-webkit-media-controls-panel {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .lyrics-container {
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: center;
+        }
+        .lyrics-line {
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+        .lyrics-line.active {
+            font-size: 1.2em;
+            opacity: 1;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .lyrics-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .lyrics-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .lyrics-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+        .lyrics-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <div class="song-info">
+            <div class="song-title">最爱 - 潘越云</div>
+            <div class="song-credits">
+                词：钟晓阳、张艾嘉 | 曲：李宗盛 | Demo制作：lzc
+            </div>
+        </div>
+        <audio id="audio" controls autoplay>
+            <source src="/static/最爱.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div class="lyrics-container" id="lyrics-container"></div>
+    </div>
+
+    <script src="/static/lyrics.js"></script>
+    <script>
+        const audio = document.getElementById('audio');
+        const lyricsContainer = document.getElementById('lyrics-container');
+        let currentLyricIndex = -1;
+
+        function initLyrics() {
+            lyrics.forEach((lyric, index) => {
+                const div = document.createElement('div');
+                div.textContent = lyric.text;
+                div.className = 'lyrics-line';
+                div.id = `lyric-${index}`;
+                lyricsContainer.appendChild(div);
+            });
+        }
+
+        function updateLyrics() {
+            const currentTime = audio.currentTime;
+            let newIndex = lyrics.findIndex((lyric, index) => {
+                const nextLyric = lyrics[index + 1];
+                return currentTime >= lyric.time && (!nextLyric || currentTime < nextLyric.time);
+            });
+
+            if (newIndex !== currentLyricIndex) {
+                if (currentLyricIndex !== -1) {
+                    document.getElementById(`lyric-${currentLyricIndex}`).classList.remove('active');
+                }
+                
+                if (newIndex !== -1) {
+                    const currentLyric = document.getElementById(`lyric-${newIndex}`);
+                    currentLyric.classList.add('active');
+                    
+                    currentLyric.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+                
+                currentLyricIndex = newIndex;
+            }
+        }
+
+        initLyrics();
+        audio.addEventListener('timeupdate', updateLyrics);
+    </script>
+</body>
+</html>
